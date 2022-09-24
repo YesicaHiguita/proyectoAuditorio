@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MisionTic2022</title>
+</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script type="text/javascript" src="myScript.js"></script>
+<body>
+    <h1>Auditorios</h1>
+    Id de auditorio: <input type="number" id="idAuditorio"><br>
+    Propietario: <input type="text" id="propietario"><br>
+    Capacidad: <input type="number" id="capacidad"><br>
+    Categoría: <input type="number" id="idCategoria"><br>
+    Nombre: <input type="text" id="nombreAuditorio"><br>
+
+    <button onclick="leerAuditorios()">CONSULTAR</button>
+    <button onclick="editarAuditorio()">ACTUALIZAR</button>
+    <button onclick="guardarAuditorio()">GUARDAR</button>
+
+    <div id="listaAuditorios">
+        
+    </div>
+</body>
+</html>
