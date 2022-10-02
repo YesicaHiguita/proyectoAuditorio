@@ -13,7 +13,7 @@
         <!--/ # Meta description END-->
     
     <!--/ # HEADER -->
-    </head> 
+    </head>
         <script type="text/javascript" src="clientesAdmin.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <body class="Clientes-admin" onload="getClients()">
@@ -33,14 +33,20 @@
     <!--/ # HEADER END-->
     <!--/ # TABLE -->
     <div id="listaClientes">
-        <table id="ClientesAdmin" class="content-table"> 
-            <tr><thead>
-                <th id="cbox"></th>
-                <th> Nombre </th> 
-                <th> Correo </th> 
-                <th> Edad </th>
-            </tr></thead>
+        <table id="ClientesAdmin" class="content-table">
         </table>
     </div>
+    <!--/ # TABLE END-->
+    <!--/ # ADD MENU-->
+    <section class="formularioAdd">
+        <h4>Registrar Nuevo Cliente</h4>
+        <input class="form_add" type="text" name="NombreCliente" id="NombreCliente_tf" placeholder="Nombre">
+        <input class="form_add" type="text" name="EmailCliente" id="EmailCliente" placeholder="Correo Electrónico">
+        <input class="form_add" type="number" name="EdadCliente" id="EdadCliente" placeholder="Edad">
+        <br>
+        <input onclick= "AddClients()" type="button" value="Guardar" id="Guardar_btn">
+        <input onclick="Clear()" type="button" value="Limpiar" id="Limpiar_btn">
+        <input onclick="Update()" type="button" value="Actualizar" id="Actualizar_btn">
+    </section>
     </body>
 </html> 

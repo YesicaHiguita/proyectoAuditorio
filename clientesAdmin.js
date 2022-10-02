@@ -4,26 +4,119 @@ function getClients () {
         type: 'GET',
         dataType: 'json',
         success : function (clientes) {
-            pintarClientes(clientes.items);
+            $('#ClientesAdmin').empty();
+            let cs = clientes.items;
+            $('#ClientesAdmin').append("<thead> <th> Nombre </th> <th> Correo </th><th> Edad </th>\
+            <th id=edit>Edit</th> <th id=del>Del</th> </thead> ");
+            for (i=0 ; i<cs.length ; i++) { 
+                $("#ClientesAdmin").append("<tr><td>"+cs[i].name+"</td><td>"+cs[i].email+"</td>\
+                <td>"+cs[i].age+"</td> <td><button onclick='showdatatoupdate(" + JSON.stringify(cs[i]) + ")'\
+                class='table_btn' id='edit_btn' >Editar</button></td> <td><button onclick='borrarCliente("+cs[i].id+")' class='table_btn' id='delete_btn'>Borrar</button></td>  </tr>")
+            }
         },
         error : function(xhr, status) {
             alert('ha sucedido un problema');
-            },
+            }
     });
 }
 
-function pintarClientes(items) {
-    let tipo = "client";
-    for (i=0 ; i<items.length ; i++) { 
-        //guardarId (items[i].id);
-        $("#ClientesAdmin").append("<tr id="+items[i].id+" class=reg_"+items[i].id+">\
-        <td><input id=cbox type=checkbox value=checkbox</td>\
-        <td>"+items[i].name+"</td><td>"+items[i].email+"</td><td>"+items[i].age+"</td></tr>");
-    }
+function borrarCliente(idCliente) {
+    let data = {
+        id: idCliente
+    };
+    let dataToSend = JSON.stringify(data);
+    $.ajax({
+        url: 'https://gfdc2db53358f36-wkpcu0pl1dye332v.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/client/client',
+        type: 'DELETE',
+        dataType: 'json',
+        data: dataToSend,
+        contentType: 'application/json',
+        success: function (reset) {
+            Clear();},
+        error : function(xhr, status) {
+            alert('ha sucedido un problema');
+            },
+        complete : function() {
+            getClients();
+        }
+    }); 
 }
 
-function guardarId(id, tipo){
-    sessionStorage.setItem('id',id);
-    sessionStorage('tipo', tipo);
-    location.href="/detalle.html";
+function showdatatoupdate(client) { 
+    window.last = client.id;
+    $("#NombreCliente_tf").val(client.name);
+    $("#EmailCliente").val(client.email);
+    $("#EdadCliente").val(client.age); 
+}
+function Update(){
+    let newName = $("#NombreCliente_tf").val();
+    let newEmail = $("#EmailCliente").val();
+    let newAge = $("#EdadCliente").val();
+    let last = window.last;
+    let data = {
+        id: last,
+        name: newName,
+        email: newEmail,
+        age: newAge
+    }
+    console.log(data);
+    let dataToSend  = JSON.stringify(data);
+    
+    $.ajax({
+        url : 'https://gfdc2db53358f36-wkpcu0pl1dye332v.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/client/client',
+        type: 'PUT',
+        data: dataToSend,
+        contentType: 'application/json',
+        success: function(reset){
+            $("#NombreCliente_tf").val("");
+            $("#EmailCliente").val("");
+            $("#EdadCliente").val("");
+        },
+        error: function(xhr, status){
+            alert("Error: " + xhr.status + " " + status);    
+        },
+        complete: function(){
+            getClients();
+        }
+    });
+}
+
+
+
+function Clear(){
+    $("#NombreCliente_tf").val("");
+    $("#EmailCliente").val("");
+    $("#EdadCliente").val("");
+}
+function AddClients(){
+    let nameClient = $("#NombreCliente_tf").val();
+    let emailClient = $("#EmailCliente").val();
+    let ageClient = $("#EdadCliente").val();
+
+    let data = {
+        name: nameClient,
+        email: emailClient,
+        age: ageClient,
+    }
+
+    let dataToSend  = JSON.stringify(data);
+    
+    $.ajax({
+        url: 'https://gfdc2db53358f36-wkpcu0pl1dye332v.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/client/client',
+        type: 'POST',
+        data: dataToSend,
+        contentType: 'application/json',
+
+        success: function(response) {
+            $("#NombreCliente_tf").val("");
+            $("#EmailCliente").val("");
+            $("#EdadCliente").val("");
+        },
+        error: function () {
+            alert('ha sucedido un problema');
+        },
+        complete: function () {
+            getClients();
+        }
+    });
 }
